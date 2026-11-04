@@ -19,20 +19,32 @@ public static class DemoDataSeeder
         logger.LogInformation("Starting Hudoor Demo Data Seeding...");
 
         // 1. Platform Admin
-        if (!await context.PlatformAdmins.AnyAsync(a => a.Username == "admin"))
+        var admin = await context.PlatformAdmins.FirstOrDefaultAsync();
+        if (admin == null)
         {
-            var admin = new PlatformAdmin
+            admin = new PlatformAdmin
             {
                 Id = Guid.NewGuid(),
-                Username = "admin",
-                Email = "admin@hudoor.local",
-                FullName = "مدير المنصة العام",
-                PasswordHash = passwordService.HashPassword("AdminPass2026!"),
+                Username = "Mohamed1652006#",
+                Email = "mohamedmostafa_1652006@outlook.com",
+                FullName = "م. محمد مصطفى (مدير المنصة)",
+                PasswordHash = passwordService.HashPassword("MoMs1652006$@"),
                 IsActive = true,
                 CreatedAtUtc = DateTime.UtcNow
             };
             await context.PlatformAdmins.AddAsync(admin);
-            logger.LogInformation("Created Admin: admin / AdminPass2026!");
+            await context.SaveChangesAsync();
+            logger.LogInformation("Created Admin: Mohamed1652006# / MoMs1652006$@");
+        }
+        else
+        {
+            admin.Username = "Mohamed1652006#";
+            admin.FullName = "م. محمد مصطفى (مدير المنصة)";
+            admin.Email = "mohamedmostafa_1652006@outlook.com";
+            admin.PasswordHash = passwordService.HashPassword("MoMs1652006$@");
+            admin.IsActive = true;
+            await context.SaveChangesAsync();
+            logger.LogInformation("Updated Admin: Mohamed1652006# / MoMs1652006$@");
         }
 
         // 2. Demo Teacher

@@ -38,8 +38,8 @@ services:
       - Jwt__Issuer=Hudoor.Api
       - Jwt__Audience=Hudoor.Client
       - Jwt__ExpiryMinutes=120
-      - HUDOOR_ADMIN_BOOTSTRAP_USERNAME=${ADMIN_USERNAME:-admin}
-      - HUDOOR_ADMIN_BOOTSTRAP_PASSWORD=${ADMIN_PASSWORD:-AdminPass2026!}
+      - HUDOOR_ADMIN_BOOTSTRAP_USERNAME=${ADMIN_USERNAME:-Mohamed1652006#}
+      - HUDOOR_ADMIN_BOOTSTRAP_PASSWORD=${ADMIN_PASSWORD:-MoMs1652006$@}
 
   # Frontend Web Client (React 19 + NGINX)
   frontend:

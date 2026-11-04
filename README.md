@@ -94,7 +94,7 @@ docker compose up -d --build
 | :--- | :--- | :--- | :--- |
 | **Teacher** | `teacher_demo` | `TeacherPass2026!` | Access Teacher Dashboard, Live QR Projector, Fast-Tap Roster |
 | **Student** | `HD-849201` | `StudentPass2026!` | Student Portal, Live Camera QR Check-in, Attendance Analytics |
-| **Platform Admin** | `admin` | `AdminPass2026!` | Provision & manage teacher workspaces |
+| **Platform Admin** | `Mohamed1652006#` | `MoMs1652006$@` | Provision & manage teacher workspaces |
 
 ---
 
