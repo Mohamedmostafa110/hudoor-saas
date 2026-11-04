@@ -102,10 +102,6 @@ if (!app.Environment.IsEnvironment("Testing"))
     {
         await db.Database.EnsureCreatedAsync();
     }
-    if (!await db.Teachers.AnyAsync())
-    {
-        await DemoDataSeeder.SeedAsync(app.Services);
-    }
 }
 
 if (args.Contains("--seed-demo"))
@@ -129,6 +125,7 @@ app.UseMiddleware<StudentTokenValidationMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGet("/healthz", () => Results.Ok(new { status = "Healthy" }));
 
 app.Run();
 
