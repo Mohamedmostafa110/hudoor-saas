@@ -9,6 +9,13 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Cloud Platform Dynamic Port Binding (Back4app, Render, Cloud Run, etc.)
+var dynamicPort = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(dynamicPort))
+{
+    builder.WebHost.UseUrls($"http://*:{dynamicPort}");
+}
+
 // Add Database Context (In Testing environment, database is configured by the test harness)
 if (!builder.Environment.IsEnvironment("Testing"))
 {
