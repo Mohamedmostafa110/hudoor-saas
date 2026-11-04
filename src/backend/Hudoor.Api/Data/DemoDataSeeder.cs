@@ -355,6 +355,195 @@ public static class DemoDataSeeder
             await context.SaveChangesAsync();
         }
 
+        // 11. Teacher Diaa Nabil (أ. ضياء نبيل) - لغة عربية للثانوية الأزهرية
+        var teacherDiaa = await context.Teachers.FirstOrDefaultAsync(t => t.Username == "diaa_nabil");
+        if (teacherDiaa == null)
+        {
+            teacherDiaa = new Teacher
+            {
+                Id = Guid.NewGuid(),
+                Username = "diaa_nabil",
+                FullName = "أ. ضياء نبيل",
+                Email = "diaa.nabil@hudoor.local",
+                PhoneNumber = "01000000000",
+                BrandName = "أ. ضياء نبيل - لغة عربية للثانوية الأزهرية",
+                PasswordHash = passwordService.HashPassword("DiaaNabil2026!"),
+                IsActive = true,
+                CreatedAtUtc = DateTime.UtcNow
+            };
+            await context.Teachers.AddAsync(teacherDiaa);
+            await context.SaveChangesAsync();
+            logger.LogInformation("Created Teacher: diaa_nabil / DiaaNabil2026!");
+        }
+        else
+        {
+            teacherDiaa.FullName = "أ. ضياء نبيل";
+            teacherDiaa.BrandName = "أ. ضياء نبيل - لغة عربية للثانوية الأزهرية";
+            teacherDiaa.PasswordHash = passwordService.HashPassword("DiaaNabil2026!");
+            teacherDiaa.IsActive = true;
+            await context.SaveChangesAsync();
+        }
+
+        // Academic Year for Diaa Nabil
+        var diaaAcademicYear = await context.AcademicYears.FirstOrDefaultAsync(y => y.TeacherId == teacherDiaa.Id && y.Name.Contains("2025/2026"));
+        if (diaaAcademicYear == null)
+        {
+            diaaAcademicYear = new AcademicYear
+            {
+                Id = Guid.NewGuid(),
+                TeacherId = teacherDiaa.Id,
+                Name = "العام الدراسي 2025/2026",
+                StartDate = new DateTime(2025, 9, 1, 0, 0, 0, DateTimeKind.Utc),
+                EndDate = new DateTime(2026, 6, 30, 0, 0, 0, DateTimeKind.Utc),
+                IsActive = true,
+                IsArchived = false,
+                CreatedAtUtc = DateTime.UtcNow
+            };
+            await context.AcademicYears.AddAsync(diaaAcademicYear);
+            await context.SaveChangesAsync();
+        }
+        else
+        {
+            diaaAcademicYear.Name = "العام الدراسي 2025/2026";
+            diaaAcademicYear.IsActive = true;
+            await context.SaveChangesAsync();
+        }
+
+        // Term for Diaa Nabil
+        var diaaTerm = await context.Terms.FirstOrDefaultAsync(t => t.TeacherId == teacherDiaa.Id && t.Name.Contains("الثاني"));
+        if (diaaTerm == null)
+        {
+            diaaTerm = new Term
+            {
+                Id = Guid.NewGuid(),
+                TeacherId = teacherDiaa.Id,
+                AcademicYearId = diaaAcademicYear.Id,
+                Name = "الفصل الدراسي الثاني",
+                StartDate = new DateTime(2026, 2, 1, 0, 0, 0, DateTimeKind.Utc),
+                EndDate = new DateTime(2026, 6, 30, 0, 0, 0, DateTimeKind.Utc),
+                IsActive = true,
+                CreatedAtUtc = DateTime.UtcNow
+            };
+            await context.Terms.AddAsync(diaaTerm);
+            await context.SaveChangesAsync();
+        }
+        else
+        {
+            diaaTerm.Name = "الفصل الدراسي الثاني";
+            diaaTerm.IsActive = true;
+            await context.SaveChangesAsync();
+        }
+
+        // Clean any corrupted old subjects/groups for Diaa Nabil (e.g. from encoding glitches)
+        var corruptedGroups = await context.Groups.Where(g => g.TeacherId == teacherDiaa.Id && g.Name.Contains("?")).ToListAsync();
+        if (corruptedGroups.Count > 0)
+        {
+            context.Groups.RemoveRange(corruptedGroups);
+            await context.SaveChangesAsync();
+        }
+        var corruptedSubjects = await context.Subjects.Where(s => s.TeacherId == teacherDiaa.Id && s.Name.Contains("?")).ToListAsync();
+        if (corruptedSubjects.Count > 0)
+        {
+            context.Subjects.RemoveRange(corruptedSubjects);
+            await context.SaveChangesAsync();
+        }
+
+        // Subjects for Diaa Nabil
+        var sub1 = await context.Subjects.FirstOrDefaultAsync(s => s.TeacherId == teacherDiaa.Id && s.GradeLevel == "الصف الأول الثانوي");
+        if (sub1 == null)
+        {
+            sub1 = new Subject
+            {
+                Id = Guid.NewGuid(),
+                TeacherId = teacherDiaa.Id,
+                Name = "اللغة العربية - الصف الأول الثانوي (أزهر)",
+                GradeLevel = "الصف الأول الثانوي",
+                IsArchived = false,
+                CreatedAtUtc = DateTime.UtcNow
+            };
+            await context.Subjects.AddAsync(sub1);
+        }
+        else
+        {
+            sub1.Name = "اللغة العربية - الصف الأول الثانوي (أزهر)";
+        }
+
+        var sub2 = await context.Subjects.FirstOrDefaultAsync(s => s.TeacherId == teacherDiaa.Id && s.GradeLevel == "الصف الثاني الثانوي");
+        if (sub2 == null)
+        {
+            sub2 = new Subject
+            {
+                Id = Guid.NewGuid(),
+                TeacherId = teacherDiaa.Id,
+                Name = "اللغة العربية - الصف الثاني الثانوي (أزهر)",
+                GradeLevel = "الصف الثاني الثانوي",
+                IsArchived = false,
+                CreatedAtUtc = DateTime.UtcNow
+            };
+            await context.Subjects.AddAsync(sub2);
+        }
+        else
+        {
+            sub2.Name = "اللغة العربية - الصف الثاني الثانوي (أزهر)";
+        }
+
+        var sub3 = await context.Subjects.FirstOrDefaultAsync(s => s.TeacherId == teacherDiaa.Id && s.GradeLevel == "الصف الثالث الثانوي");
+        if (sub3 == null)
+        {
+            sub3 = new Subject
+            {
+                Id = Guid.NewGuid(),
+                TeacherId = teacherDiaa.Id,
+                Name = "اللغة العربية - الصف الثالث الثانوي (أزهر)",
+                GradeLevel = "الصف الثالث الثانوي",
+                IsArchived = false,
+                CreatedAtUtc = DateTime.UtcNow
+            };
+            await context.Subjects.AddAsync(sub3);
+        }
+        else
+        {
+            sub3.Name = "اللغة العربية - الصف الثالث الثانوي (أزهر)";
+        }
+        await context.SaveChangesAsync();
+
+        // The 6 Groups (2 per Grade Level):
+        var groupDefs = new[]
+        {
+            new { SubId = sub1.Id, Name = "أولى ثانوي - مجموعة (1)", Schedule = "السبت والثلاثاء 03:00 م - 05:00 م", Cap = 30 },
+            new { SubId = sub1.Id, Name = "أولى ثانوي - مجموعة (2)", Schedule = "الأحد والأربعاء 03:00 م - 05:00 م", Cap = 30 },
+            new { SubId = sub2.Id, Name = "تانية ثانوي - مجموعة (1)", Schedule = "السبت والثلاثاء 05:00 م - 07:00 م", Cap = 30 },
+            new { SubId = sub2.Id, Name = "تانية ثانوي - مجموعة (2)", Schedule = "الأحد والأربعاء 05:00 م - 07:00 م", Cap = 30 },
+            new { SubId = sub3.Id, Name = "تالتة ثانوي - مجموعة (1)", Schedule = "السبت والثلاثاء 07:00 م - 09:00 م", Cap = 35 },
+            new { SubId = sub3.Id, Name = "تالتة ثانوي - مجموعة (2)", Schedule = "الأحد والأربعاء 07:00 م - 09:00 م", Cap = 35 }
+        };
+
+        foreach (var def in groupDefs)
+        {
+            var grp = await context.Groups.FirstOrDefaultAsync(g => g.TeacherId == teacherDiaa.Id && g.SubjectId == def.SubId && g.Name == def.Name);
+            if (grp == null)
+            {
+                await context.Groups.AddAsync(new Group
+                {
+                    Id = Guid.NewGuid(),
+                    TeacherId = teacherDiaa.Id,
+                    SubjectId = def.SubId,
+                    AcademicYearId = diaaAcademicYear.Id,
+                    Name = def.Name,
+                    ScheduleDescription = def.Schedule,
+                    MaxCapacity = def.Cap,
+                    IsArchived = false,
+                    CreatedAtUtc = DateTime.UtcNow
+                });
+            }
+            else
+            {
+                grp.ScheduleDescription = def.Schedule;
+                grp.MaxCapacity = def.Cap;
+            }
+        }
+        await context.SaveChangesAsync();
+
         logger.LogInformation("Hudoor Demo Data Seeding completed successfully!");
     }
 }
