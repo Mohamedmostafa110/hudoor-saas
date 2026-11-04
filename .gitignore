@@ -60,3 +60,4 @@ lerna-debug.log*
 # Misc
 .tmp/
 .cache/
+.neon

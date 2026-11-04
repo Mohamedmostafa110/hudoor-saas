@@ -12,8 +12,24 @@ var builder = WebApplication.CreateBuilder(args);
 // Add Database Context (In Testing environment, database is configured by the test harness)
 if (!builder.Environment.IsEnvironment("Testing"))
 {
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? builder.Configuration["DATABASE_URL"]
+        ?? builder.Configuration["DATABASE_URL_UNPOOLED"]
+        ?? throw new InvalidOperationException("Connection string is not configured.");
+
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    {
+        if (connectionString.StartsWith("Host=", StringComparison.OrdinalIgnoreCase) ||
+            connectionString.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) ||
+            connectionString.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+        {
+            options.UseNpgsql(connectionString);
+        }
+        else
+        {
+            options.UseSqlServer(connectionString);
+        }
+    });
 }
 
 // Add HTTP Context and Tenant Scoping
@@ -77,6 +93,16 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    if (db.Database.IsNpgsql())
+    {
+        await db.Database.EnsureCreatedAsync();
+    }
+}
 
 if (args.Contains("--seed-demo"))
 {

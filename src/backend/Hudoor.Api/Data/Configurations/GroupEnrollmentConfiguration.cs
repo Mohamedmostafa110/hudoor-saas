@@ -22,10 +22,9 @@ public class GroupEnrollmentConfiguration : IEntityTypeConfiguration<GroupEnroll
         builder.HasIndex(ge => ge.GroupId);
         builder.HasIndex(ge => ge.StudentId);
 
-        // Prevent duplicate active enrollments for the same student in the same group
+        // Index for fast student-group relationship lookups
         builder.HasIndex(ge => new { ge.GroupId, ge.StudentId })
-            .HasFilter("[IsActive] = 1")
-            .HasDatabaseName("IX_GroupEnrollments_GroupId_StudentId_Active");
+            .HasDatabaseName("IX_GroupEnrollments_GroupId_StudentId");
 
         builder.HasOne(ge => ge.Teacher)
             .WithMany(t => t.Enrollments)
