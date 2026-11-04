@@ -58,6 +58,10 @@ export async function request<T>(
     data = null;
   }
 
+  if (data === null) {
+    throw new ApiError('تعذر الاتصال بخادم النظام السحابي (API). يرجى التأكد من تشغيل الخادم وضبط الرابط.', response.status || 502);
+  }
+
   if (!response.ok) {
     const message = data?.message || data?.title || 'حدث خطأ أثناء معالجة الطلب';
     throw new ApiError(message, response.status, data);

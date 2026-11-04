@@ -39,7 +39,11 @@ export const LoginView: React.FC = () => {
       login(res);
     } catch (err) {
       if (err instanceof ApiError) {
-        setError(err.message);
+        if (err.message === 'Invalid credentials.') {
+          setError('اسم المستخدم أو كلمة المرور غير صحيحة');
+        } else {
+          setError(err.message);
+        }
       } else {
         setError(t('actionError'));
       }
