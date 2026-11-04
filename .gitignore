@@ -1,0 +1,62 @@
+# ====================================================================
+# Hudoor Root GitIgnore
+# ====================================================================
+
+# OS & Environment
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# IDEs & Editors
+.vs/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ====================================================================
+# .NET Build Artifacts
+# ====================================================================
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+*.lock
+*.manifest
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Secrets & Local Configs
+appsettings*.local.json
+appsettings.Production.json
+*.pfx
+*.certificate
+
+# ====================================================================
+# Node / Vite / Frontend Artifacts
+# ====================================================================
+node_modules/
+dist/
+dist-ssr/
+coverage/
+
+# Frontend Environment & Logs
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Misc
+.tmp/
+.cache/

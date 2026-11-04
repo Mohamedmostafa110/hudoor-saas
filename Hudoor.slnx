@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/backend/">
+    <Project Path="src/backend/Hudoor.Api/Hudoor.Api.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Hudoor.Api.Tests/Hudoor.Api.Tests.csproj" />
+  </Folder>
+</Solution>

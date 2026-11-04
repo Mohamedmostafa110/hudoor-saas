@@ -1,0 +1,23 @@
+{
+  "name": "حضور - Hudoor",
+  "short_name": "حضور",
+  "description": "منصة الحضور الذكي للمدرسين والمراكز التعليمية - Smart Attendance Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B1329",
+  "theme_color": "#C59B27",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

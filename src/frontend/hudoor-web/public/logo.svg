@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient: Midnight Navy to Deep Space -->
+    <linearGradient id="hudoor-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141E33"/>
+      <stop offset="50%" stop-color="#0B1329"/>
+      <stop offset="100%" stop-color="#070C1A"/>
+    </linearGradient>
+
+    <!-- Warm Gold Gradient for Arabic Letter Haa (ح) -->
+    <linearGradient id="gold-primary" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A"/>
+      <stop offset="30%" stop-color="#F59E0B"/>
+      <stop offset="70%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+
+    <!-- Highlight Gold -->
+    <linearGradient id="gold-light" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D97706"/>
+      <stop offset="50%" stop-color="#FCD34D"/>
+      <stop offset="100%" stop-color="#FFFBEB"/>
+    </linearGradient>
+
+    <!-- Emerald Success Gradient for the Attendance Checkmark -->
+    <linearGradient id="emerald-check" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6EE7B7"/>
+      <stop offset="50%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+
+    <!-- Glow & Shadow Filters -->
+    <filter id="gold-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <filter id="subtle-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+
+    <filter id="emerald-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#10B981" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Squircle Base Container -->
+  <rect width="512" height="512" rx="120" fill="url(#hudoor-bg)"/>
+
+  <!-- Sleek Outer Rim Border -->
+  <rect x="12" y="12" width="488" height="488" rx="110" fill="none" stroke="url(#gold-primary)" stroke-width="3" stroke-opacity="0.35"/>
+  <rect x="20" y="20" width="472" height="472" rx="102" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-opacity="0.08"/>
+
+  <!-- Attendance Radar Echo Lines (Top Right Tech Accent) -->
+  <circle cx="395" cy="115" r="32" fill="none" stroke="url(#gold-primary)" stroke-width="2" stroke-opacity="0.25" stroke-dasharray="4 6"/>
+  <circle cx="395" cy="115" r="18" fill="none" stroke="url(#gold-primary)" stroke-width="2.5" stroke-opacity="0.45"/>
+  <circle cx="395" cy="115" r="7" fill="url(#gold-light)" filter="url(#gold-glow)"/>
+
+  <!-- Core Emblem: Stylized Calligraphic 'ح' with Integrated Presence Checkmark -->
+  <g filter="url(#subtle-shadow)">
+    <!-- Top Crown of 'ح' -->
+    <path d="M165 145 C230 142, 310 135, 365 170 C375 176, 372 192, 358 195 C310 205, 255 210, 205 235 C185 245, 175 230, 190 215 C215 190, 250 180, 290 175 C240 175, 195 180, 150 170 C138 167, 142 146, 165 145 Z" 
+          fill="url(#gold-light)"/>
+
+    <!-- Main Dynamic Arc of 'ح' Sweeping Down and Circling Bottom -->
+    <path d="M 235 220 
+             C 320 225, 385 285, 385 360 
+             C 385 415, 335 445, 260 445 
+             C 175 445, 120 395, 120 330 
+             C 120 295, 140 268, 172 258 
+             C 185 254, 192 268, 182 278 
+             C 160 292, 152 312, 152 334 
+             C 152 375, 192 412, 262 412 
+             C 318 412, 352 388, 352 352 
+             C 352 298, 298 256, 225 250 
+             C 210 248, 215 220, 235 220 Z" 
+          fill="url(#gold-primary)"/>
+
+    <!-- Inner Golden Swirl Accent -->
+    <path d="M 270 255 C 315 265, 350 300, 350 348 C 350 375, 328 402, 275 405 C 265 405, 260 395, 268 392 C 305 380, 325 358, 325 338 C 325 305, 295 278, 258 270 C 250 268, 255 255, 270 255 Z"
+          fill="url(#gold-light)" opacity="0.65"/>
+  </g>
+
+  <!-- The Smart Presence Verified Checkmark (Dynamic Attendance Indicator) -->
+  <g filter="url(#emerald-glow)">
+    <path d="M 195 325 
+             L 242 375 
+             C 246 379, 254 379, 258 374 
+             L 362 252 
+             C 368 245, 362 236, 354 242 
+             L 251 346 
+             L 205 305 
+             C 198 299, 189 308, 195 316 Z" 
+          fill="url(#emerald-check)"/>
+  </g>
+
+  <!-- Micro Precision Sparkle / Lens Flare on the Checkmark Tip -->
+  <circle cx="362" cy="245" r="4" fill="#FFFFFF"/>
+</svg>

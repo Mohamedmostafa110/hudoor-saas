@@ -1,0 +1,58 @@
+services:
+  # Database Service (Microsoft SQL Server 2022)
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: hudoor-sqlserver
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${MSSQL_PASSWORD:-HudoorSqlSecure2026!}
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - hudoor-db-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$${MSSQL_SA_PASSWORD}\" -C -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  # Backend API (.NET 10 Web API)
+  backend:
+    build:
+      context: .
+      dockerfile: src/backend/Hudoor.Api/Dockerfile
+    container_name: hudoor-api
+    restart: unless-stopped
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    ports:
+      - "5236:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=HudoorDb;User Id=sa;Password=${MSSQL_PASSWORD:-HudoorSqlSecure2026!};TrustServerCertificate=True;MultipleActiveResultSets=true
+      - Jwt__Key=${JWT_SECRET:-HudoorAttendanceSaasSuperSecretProdKey2026!#*MustBeAtLeast32BytesLong}
+      - Jwt__Issuer=Hudoor.Api
+      - Jwt__Audience=Hudoor.Client
+      - Jwt__ExpiryMinutes=120
+      - HUDOOR_ADMIN_BOOTSTRAP_USERNAME=${ADMIN_USERNAME:-admin}
+      - HUDOOR_ADMIN_BOOTSTRAP_PASSWORD=${ADMIN_PASSWORD:-AdminPass2026!}
+
+  # Frontend Web Client (React 19 + NGINX)
+  frontend:
+    build:
+      context: src/frontend/hudoor-web
+      dockerfile: Dockerfile
+    container_name: hudoor-web
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+
+volumes:
+  hudoor-db-data:
+    driver: local
