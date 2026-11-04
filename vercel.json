@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://pace-extract-outer-tool.trycloudflare.com/api/$1"
+      "destination": "http://hudoor-api.runasp.net/api/$1"
     },
     {
       "source": "/(.*)",
