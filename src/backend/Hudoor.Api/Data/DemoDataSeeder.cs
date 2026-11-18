@@ -544,6 +544,121 @@ public static class DemoDataSeeder
         }
         await context.SaveChangesAsync();
 
-        logger.LogInformation("Hudoor Demo Data Seeding completed successfully!");
+        // 12. Students for Teacher Diaa Nabil (48 realistic students without phone numbers)
+        var diaaStudentsDefs = new[]
+        {
+            // الصف الأول الثانوي (أزهر) - مجموعة (1)
+            new { Code = "HD-710001", Name = "عبد الرحمن أحمد الشريف", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (1)" },
+            new { Code = "HD-710002", Name = "بلال محمود عبد الرحيم", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (1)" },
+            new { Code = "HD-710003", Name = "يوسف إبراهيم الدسوقي", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (1)" },
+            new { Code = "HD-710004", Name = "حمزة محمد الصاوي", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (1)" },
+            new { Code = "HD-710005", Name = "سلمى حسام البدري", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (1)" },
+            new { Code = "HD-710006", Name = "فاطمة حسن الألفي", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (1)" },
+            new { Code = "HD-710007", Name = "آية مصطفى القاضي", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (1)" },
+            new { Code = "HD-710008", Name = "مريم سامح الجوهري", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (1)" },
+
+            // الصف الأول الثانوي (أزهر) - مجموعة (2)
+            new { Code = "HD-710009", Name = "عمر خالد السعدني", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (2)" },
+            new { Code = "HD-710010", Name = "أنس ياسر الشرقاوي", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (2)" },
+            new { Code = "HD-710011", Name = "طارق مدحت البنهاوي", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (2)" },
+            new { Code = "HD-710012", Name = "زياد عمرو الهواري", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (2)" },
+            new { Code = "HD-710013", Name = "ملك عادل الباز", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (2)" },
+            new { Code = "HD-710014", Name = "خديجة وليد النجار", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (2)" },
+            new { Code = "HD-710015", Name = "جنى أحمد العوضي", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (2)" },
+            new { Code = "HD-710016", Name = "هاجر سعيد غنيم", Grade = "الصف الأول الثانوي (أزهر)", GroupName = "أولى ثانوي - مجموعة (2)" },
+
+            // الصف الثاني الثانوي (أزهر) - مجموعة (1)
+            new { Code = "HD-710017", Name = "مصطفى حسام الدين", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (1)" },
+            new { Code = "HD-710018", Name = "إبراهيم كمال الشناوي", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (1)" },
+            new { Code = "HD-710019", Name = "معاذ أشرف البسيوني", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (1)" },
+            new { Code = "HD-710020", Name = "علي حازم الفيشاوي", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (1)" },
+            new { Code = "HD-710021", Name = "نور الدين تامر عفيفي", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (1)" },
+            new { Code = "HD-710022", Name = "رضوى أسامة زايد", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (1)" },
+            new { Code = "HD-710023", Name = "ياسمين هشام بركات", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (1)" },
+            new { Code = "HD-710024", Name = "هدى شريف العدوي", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (1)" },
+
+            // الصف الثاني الثانوي (أزهر) - مجموعة (2)
+            new { Code = "HD-710025", Name = "أحمد ماجد الدمياطي", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (2)" },
+            new { Code = "HD-710026", Name = "كريم عماد المنشاوي", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (2)" },
+            new { Code = "HD-710027", Name = "سيف الدين رامي زهران", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (2)" },
+            new { Code = "HD-710028", Name = "عبد الله علاء النحاس", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (2)" },
+            new { Code = "HD-710029", Name = "نورهان عصام غالي", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (2)" },
+            new { Code = "HD-710030", Name = "منة الله طه شلبي", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (2)" },
+            new { Code = "HD-710031", Name = "ريم أيمن الخواجة", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (2)" },
+            new { Code = "HD-710032", Name = "سارة بهاء عزمي", Grade = "الصف الثاني الثانوي (أزهر)", GroupName = "تانية ثانوي - مجموعة (2)" },
+
+            // الصف الثالث الثانوي (أزهر) - مجموعة (1)
+            new { Code = "HD-710033", Name = "حسن وائل البحيري", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (1)" },
+            new { Code = "HD-710034", Name = "محمود أشرف سويلم", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (1)" },
+            new { Code = "HD-710035", Name = "يحيى هاني متولي", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (1)" },
+            new { Code = "HD-710036", Name = "عبد العزيز عاطف زكي", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (1)" },
+            new { Code = "HD-710037", Name = "أميرة حسام الفقي", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (1)" },
+            new { Code = "HD-710038", Name = "تسنيم هاني عبد العليم", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (1)" },
+            new { Code = "HD-710039", Name = "أروى أشرف قنديل", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (1)" },
+            new { Code = "HD-710040", Name = "رنا وليد رضوان", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (1)" },
+
+            // الصف الثالث الثانوي (أزهر) - مجموعة (2)
+            new { Code = "HD-710041", Name = "مازن أسامة البغدادي", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (2)" },
+            new { Code = "HD-710042", Name = "عمار ياسر السنباطي", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (2)" },
+            new { Code = "HD-710043", Name = "فارس سامي بدران", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (2)" },
+            new { Code = "HD-710044", Name = "حازم ناصر الجندي", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (2)" },
+            new { Code = "HD-710045", Name = "شهد تامر العيسوي", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (2)" },
+            new { Code = "HD-710046", Name = "رحمة إيهاب سليمان", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (2)" },
+            new { Code = "HD-710047", Name = "حبيبة مصطفى خليل", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (2)" },
+            new { Code = "HD-710048", Name = "ندى طارق الصيرفي", Grade = "الصف الثالث الثانوي (أزهر)", GroupName = "تالتة ثانوي - مجموعة (2)" }
+        };
+
+        var defaultDiaaStudentHash = passwordService.HashPassword("DiaaNabil2026!");
+        foreach (var sDef in diaaStudentsDefs)
+        {
+            var student = await context.Students.FirstOrDefaultAsync(s => s.TeacherId == teacherDiaa.Id && s.StudentCode == sDef.Code);
+            if (student == null)
+            {
+                student = new Student
+                {
+                    Id = Guid.NewGuid(),
+                    TeacherId = teacherDiaa.Id,
+                    StudentCode = sDef.Code,
+                    FullName = sDef.Name,
+                    PhoneNumber = null,
+                    ParentPhoneNumber = null,
+                    CurrentGrade = sDef.Grade,
+                    PasswordHash = defaultDiaaStudentHash,
+                    TokenVersion = 1,
+                    MustChangePassword = false,
+                    IsActive = true,
+                    CreatedAtUtc = DateTime.UtcNow
+                };
+                await context.Students.AddAsync(student);
+            }
+            else
+            {
+                student.FullName = sDef.Name;
+                student.CurrentGrade = sDef.Grade;
+                student.PhoneNumber = null;
+                student.ParentPhoneNumber = null;
+            }
+
+            var targetGroup = await context.Groups.FirstOrDefaultAsync(g => g.TeacherId == teacherDiaa.Id && g.Name == sDef.GroupName);
+            if (targetGroup != null)
+            {
+                var isEnrolled = await context.GroupEnrollments.AnyAsync(ge => ge.GroupId == targetGroup.Id && ge.StudentId == student.Id && ge.IsActive);
+                if (!isEnrolled)
+                {
+                    await context.GroupEnrollments.AddAsync(new GroupEnrollment
+                    {
+                        Id = Guid.NewGuid(),
+                        TeacherId = teacherDiaa.Id,
+                        GroupId = targetGroup.Id,
+                        StudentId = student.Id,
+                        JoinedDateUtc = DateTime.UtcNow.AddDays(-15),
+                        IsActive = true
+                    });
+                }
+            }
+        }
+        await context.SaveChangesAsync();
+
+        logger.LogInformation("Hudoor Demo Data Seeding completed successfully (including Diaa Nabil students)!");
     }
 }
