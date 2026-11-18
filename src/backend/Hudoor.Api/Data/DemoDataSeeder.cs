@@ -659,6 +659,146 @@ public static class DemoDataSeeder
         }
         await context.SaveChangesAsync();
 
-        logger.LogInformation("Hudoor Demo Data Seeding completed successfully (including Diaa Nabil students)!");
+        // 13. Historical 2-week Attendance Sessions for Diaa Nabil (Overall Attendance Rate = 78%)
+        var existingDiaaSessions = await context.Sessions
+            .Where(s => s.TeacherId == teacherDiaa.Id)
+            .ToListAsync();
+
+        if (existingDiaaSessions.Any())
+        {
+            var sIds = existingDiaaSessions.Select(s => s.Id).ToList();
+            var existingRecords = await context.AttendanceRecords
+                .Where(r => sIds.Contains(r.SessionId))
+                .ToListAsync();
+            context.AttendanceRecords.RemoveRange(existingRecords);
+            context.Sessions.RemoveRange(existingDiaaSessions);
+            await context.SaveChangesAsync();
+        }
+
+        var groupsList = await context.Groups
+            .Include(g => g.Enrollments.Where(e => e.IsActive))
+            .Where(g => g.TeacherId == teacherDiaa.Id && !g.IsArchived)
+            .OrderBy(g => g.Name)
+            .ToListAsync();
+
+        var sessionTitles = new[]
+        {
+            "حصة (1): مدخل البلاغة وعلم البيان",
+            "حصة (2): النحو - إعراب الفعل وبناء الأسماء",
+            "حصة (3): شواهد النصوص وتطبيقات القرآن الكريم",
+            "حصة (4): مراجعة دورية وتطبيقات شاملة"
+        };
+
+        var allNewRecords = new List<AttendanceRecord>();
+        var baseDate = DateTime.UtcNow;
+
+        // Group index targets for Present+Late count out of total records:
+        // Group 0: 34 records -> 26 P+L (8 A/E) -> 76.5%
+        // Group 1: 34 records -> 27 P+L (7 A/E) -> 79.4%
+        // Group 2: 32 records -> 25 P+L (7 A/E) -> 78.1%
+        // Group 3: 34 records -> 26 P+L (8 A/E) -> 76.5%
+        // Group 4: 32 records -> 25 P+L (7 A/E) -> 78.1%
+        // Group 5: 34 records -> 27 P+L (7 A/E) -> 79.4%
+        // Total P+L = 156, Total records = 200 -> EXACTLY 78.0%!
+        int[] targetPresents = [26, 27, 25, 26, 25, 27];
+
+        for (int gIdx = 0; gIdx < groupsList.Count; gIdx++)
+        {
+            var grp = groupsList[gIdx];
+            var enrolled = grp.Enrollments.Select(e => e.StudentId).ToList();
+            bool isSatTue = grp.ScheduleDescription.Contains("السبت");
+            int[] dayOffsets = isSatTue ? [12, 9, 5, 2] : [11, 8, 4, 1];
+
+            var groupSessions = new List<Session>();
+            for (int sIdx = 0; sIdx < 4; sIdx++)
+            {
+                var session = new Session
+                {
+                    Id = Guid.NewGuid(),
+                    TeacherId = teacherDiaa.Id,
+                    GroupId = grp.Id,
+                    Title = sessionTitles[sIdx],
+                    SessionDateUtc = baseDate.AddDays(-dayOffsets[sIdx]),
+                    Status = "Closed",
+                    QrSecuritySalt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)),
+                    CreatedAtUtc = baseDate.AddDays(-dayOffsets[sIdx])
+                };
+                groupSessions.Add(session);
+            }
+            await context.Sessions.AddRangeAsync(groupSessions);
+            await context.SaveChangesAsync();
+
+            var pairs = new List<(Guid StudentId, Session Session)>();
+            for (int sIdx = 0; sIdx < groupSessions.Count; sIdx++)
+            {
+                var s = groupSessions[sIdx];
+                int countToTake = (enrolled.Count > 8 && sIdx == 0) ? 7 : enrolled.Count;
+                for (int stIdx = 0; stIdx < countToTake; stIdx++)
+                {
+                    pairs.Add((enrolled[stIdx], s));
+                }
+            }
+
+            int groupTargetPresents = targetPresents[gIdx];
+            int pAssigned = 0;
+
+            for (int pIdx = 0; pIdx < pairs.Count; pIdx++)
+            {
+                var pair = pairs[pIdx];
+                bool isAtRiskStudent = pair.StudentId == enrolled[0];
+                string status;
+                string method = (pIdx % 3 == 0) ? "Manual" : "QRCode";
+                int? lateMinutes = null;
+                string? note = null;
+
+                if (isAtRiskStudent && (pIdx % 4 != 0))
+                {
+                    status = "Absent";
+                }
+                else if (pAssigned < groupTargetPresents)
+                {
+                    if (pAssigned % 20 == 0)
+                    {
+                        status = "Late";
+                        lateMinutes = 15;
+                    }
+                    else
+                    {
+                        status = "Present";
+                    }
+                    pAssigned++;
+                }
+                else
+                {
+                    if (allNewRecords.Count(r => r.Status == "Excused") < 10 && pIdx % 2 == 0)
+                    {
+                        status = "Excused";
+                        note = "إذن غياب مسبق من ولي الأمر";
+                    }
+                    else
+                    {
+                        status = "Absent";
+                    }
+                }
+
+                allNewRecords.Add(new AttendanceRecord
+                {
+                    Id = Guid.NewGuid(),
+                    TeacherId = teacherDiaa.Id,
+                    SessionId = pair.Session.Id,
+                    StudentId = pair.StudentId,
+                    Status = status,
+                    Method = method,
+                    RecordedAtUtc = pair.Session.SessionDateUtc.AddMinutes(5),
+                    MinutesLate = lateMinutes,
+                    Notes = note
+                });
+            }
+        }
+
+        await context.AttendanceRecords.AddRangeAsync(allNewRecords);
+        await context.SaveChangesAsync();
+
+        logger.LogInformation("Hudoor Demo Data Seeding completed successfully (including Diaa Nabil students and 2-week attendance at 78%)!");
     }
 }
